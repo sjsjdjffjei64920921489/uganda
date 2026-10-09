@@ -1,0 +1,885 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin — Buharl Collections</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --rose:       #c8526b;
+      --rose-dark:  #9e3350;
+      --rose-light: #f7dde3;
+      --gold:       #c9993a;
+      --cream:      #fdf8f2;
+      --soft:       #fff5f7;
+      --text:       #1e1218;
+      --muted:      #6e5a62;
+      --white:      #ffffff;
+      --sidebar-w:  240px;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background: #f5f0f3;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    button { font: inherit; cursor: pointer; border: none; }
+    input, textarea, select { font: inherit; }
+
+    /* ════════════════════════════════════════
+       LOGIN SCREEN
+    ════════════════════════════════════════ */
+    #loginScreen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #2a0d18 0%, #6b1f36 50%, #9e3350 100%);
+      padding: 24px;
+    }
+
+    .login-card {
+      background: var(--white);
+      border-radius: 24px;
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 420px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.3);
+    }
+
+    .login-brand {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+
+    .login-brand .name {
+      font-family: Georgia, serif;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--rose-dark);
+    }
+
+    .login-brand .name span { color: var(--gold); }
+
+    .login-brand .sub {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .login-card h2 {
+      font-family: Georgia, serif;
+      font-size: 1.45rem;
+      color: var(--rose-dark);
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .login-form {
+      display: grid;
+      gap: 18px;
+    }
+
+    .l-field label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--rose-dark);
+      margin-bottom: 7px;
+    }
+
+    .l-field input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid rgba(200,82,107,0.22);
+      border-radius: 12px;
+      background: #fff8fa;
+      font-size: 0.97rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      margin-top: 0;
+    }
+
+    .l-field input:focus {
+      outline: none;
+      border-color: var(--rose);
+      box-shadow: 0 0 0 3px rgba(200,82,107,0.12);
+    }
+
+    .l-field input::placeholder { color: #c0aab4; }
+
+    .login-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--rose);
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 12px;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 4px;
+    }
+
+    .login-btn:hover {
+      background: var(--rose-dark);
+      transform: translateY(-2px);
+    }
+
+    .login-btn:active { transform: translateY(0); }
+
+    .login-alert {
+      display: none;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .login-alert.error {
+      display: block;
+      background: rgba(220,38,38,0.08);
+      color: #991b1b;
+      border: 1px solid rgba(220,38,38,0.2);
+    }
+
+    .login-hint {
+      text-align: center;
+      margin-top: 20px;
+      font-size: 0.78rem;
+      color: var(--muted);
+    }
+
+    .login-hint span {
+      display: inline-block;
+      background: var(--rose-light);
+      color: var(--rose-dark);
+      border-radius: 8px;
+      padding: 4px 10px;
+      font-weight: 700;
+      margin-top: 5px;
+    }
+
+    /* ════════════════════════════════════════
+       DASHBOARD
+    ════════════════════════════════════════ */
+    #dashboard { display: none; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      grid-template-rows: auto 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── Sidebar ── */
+    .sidebar {
+      grid-row: 1 / 3;
+      background: #2a0d18;
+      color: rgba(255,255,255,0.85);
+      display: flex;
+      flex-direction: column;
+      padding: 0 0 24px;
+    }
+
+    .sidebar-brand {
+      padding: 24px 22px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 12px;
+    }
+
+    .sidebar-brand .name {
+      font-family: Georgia, serif;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--white);
+    }
+
+    .sidebar-brand .name span { color: var(--gold); }
+
+    .sidebar-brand .sub {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.38);
+      margin-top: 3px;
+    }
+
+    .nav-section {
+      padding: 8px 14px 4px;
+      font-size: 0.63rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255,255,255,0.28);
+      font-weight: 700;
+      margin-top: 8px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      padding: 10px 22px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: rgba(255,255,255,0.68);
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .nav-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: var(--white); }
+    .nav-item.active { background: var(--rose-dark); color: var(--white); }
+
+    .notif {
+      width: 7px; height: 7px;
+      background: var(--gold);
+      border-radius: 50%;
+      margin-left: 4px;
+      display: inline-block;
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      padding: 16px 22px 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: grid;
+      gap: 4px;
+    }
+
+    .sidebar-footer a,
+    .sidebar-footer button {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+      color: rgba(255,255,255,0.5);
+      padding: 10px 0;
+      background: transparent;
+      width: 100%;
+      text-align: left;
+      transition: color 0.2s;
+    }
+
+    .sidebar-footer a:hover,
+    .sidebar-footer button:hover { color: var(--gold); }
+
+    /* ── Topbar ── */
+    .topbar {
+      background: var(--white);
+      border-bottom: 1px solid rgba(200,82,107,0.1);
+      padding: 0 28px;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 12px rgba(200,82,107,0.06);
+    }
+
+    .topbar-title {
+      font-size: 1.12rem;
+      font-weight: 800;
+      color: var(--rose-dark);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .admin-pill {
+      background: var(--rose-light);
+      color: var(--rose-dark);
+      border-radius: 999px;
+      padding: 5px 14px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--rose-dark);
+      color: var(--white);
+      font-weight: 800;
+      font-size: 0.88rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── Main ── */
+    .main { padding: 28px 28px 48px; overflow-y: auto; }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    /* ── Stats ── */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0,1fr));
+      gap: 18px;
+      margin-bottom: 28px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border-radius: 18px;
+      padding: 22px 22px 18px;
+      box-shadow: 0 4px 18px rgba(200,82,107,0.08);
+      border-top: 4px solid var(--rose);
+    }
+
+    .stat-card.gold  { border-top-color: var(--gold); }
+    .stat-card.green { border-top-color: #10b981; }
+    .stat-card.blue  { border-top-color: #6366f1; }
+
+    .stat-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 8px; }
+    .stat-value { font-size: 2.2rem; font-weight: 800; color: var(--rose-dark); line-height: 1; margin-bottom: 4px; }
+    .stat-sub   { font-size: 0.76rem; color: var(--muted); }
+
+    .mini-bars { display: flex; align-items: flex-end; gap: 5px; height: 36px; margin-top: 10px; }
+    .mini-bar  { flex: 1; border-radius: 4px 4px 0 0; transition: opacity 0.2s; }
+    .mini-bar:hover { opacity: 0.75; }
+
+    /* ── Section bar ── */
+    .section-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px; }
+    .section-bar h2 { font-size: 1.05rem; font-weight: 800; color: var(--rose-dark); }
+
+    /* ── Buttons ── */
+    .btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 9px 18px; border-radius: 999px;
+      font-size: 0.83rem; font-weight: 700;
+      transition: background 0.2s, transform 0.15s;
+      cursor: pointer; border: none;
+    }
+
+    .btn-rose    { background: var(--rose); color: var(--white); }
+    .btn-rose:hover { background: var(--rose-dark); transform: translateY(-1px); }
+
+    .btn-outline { background: transparent; border: 1.5px solid var(--rose); color: var(--rose); }
+    .btn-outline:hover { background: var(--rose-light); }
+
+    .btn-sm { padding: 6px 13px; font-size: 0.77rem; }
+
+    /* ── Table card ── */
+    .table-card { background: var(--white); border-radius: 18px; box-shadow: 0 4px 18px rgba(200,82,107,0.08); overflow: hidden; margin-bottom: 28px; }
+
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+    .data-table thead { background: var(--rose-dark); color: var(--white); }
+    .data-table th { padding: 13px 16px; text-align: left; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; white-space: nowrap; }
+    .data-table tbody tr { border-bottom: 1px solid rgba(200,82,107,0.07); transition: background 0.15s; }
+    .data-table tbody tr:last-child { border-bottom: none; }
+    .data-table tbody tr:hover { background: #fff5f7; }
+    .data-table td { padding: 13px 16px; vertical-align: middle; }
+    .td-muted { color: var(--muted); font-size: 0.82rem; }
+
+    /* ── Pills ── */
+    .pill { display: inline-block; padding: 3px 11px; border-radius: 999px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+    .pill-new      { background: #ede9fe; color: #5b21b6; }
+    .pill-replied  { background: #d1fae5; color: #065f46; }
+    .pill-pending  { background: #fef9c3; color: #854d0e; }
+    .pill-kids     { background: var(--rose-light); color: var(--rose-dark); }
+    .pill-casual   { background: #fef3c7; color: #92400e; }
+    .pill-occasion { background: #e0e7ff; color: #3730a3; }
+    .pill-seasonal { background: #d1fae5; color: #065f46; }
+    .pill-active   { background: #d1fae5; color: #065f46; }
+    .pill-draft    { background: #f3f4f6; color: #374151; }
+
+    /* ── Search box ── */
+    .search-box { padding: 8px 16px; border: 1.5px solid rgba(200,82,107,0.18); border-radius: 999px; font-size: 0.85rem; width: 210px; background: var(--soft); transition: border-color 0.2s; margin-top: 0; }
+    .search-box:focus { outline: none; border-color: var(--rose); }
+
+    /* ── Form card ── */
+    .form-card { background: var(--white); border-radius: 18px; padding: 28px; box-shadow: 0 4px 18px rgba(200,82,107,0.08); margin-bottom: 24px; }
+    .form-card h3 { font-size: 1rem; color: var(--rose-dark); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid rgba(200,82,107,0.1); }
+
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+    .form-row { display: flex; flex-direction: column; gap: 6px; }
+    .form-row.full { grid-column: span 2; }
+
+    .form-row label { font-size: 0.73rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--rose-dark); }
+
+    .form-row input,
+    .form-row textarea,
+    .form-row select {
+      padding: 10px 14px; border: 1.5px solid rgba(200,82,107,0.18);
+      border-radius: 10px; background: #fff8fa;
+      font-size: 0.9rem; font-family: Arial, sans-serif;
+      transition: border-color 0.2s, box-shadow 0.2s; margin-top: 0;
+    }
+
+    .form-row input:focus,
+    .form-row textarea:focus,
+    .form-row select:focus { outline: none; border-color: var(--rose); box-shadow: 0 0 0 3px rgba(200,82,107,0.1); }
+    .form-row textarea { resize: vertical; min-height: 90px; }
+
+    /* ── Product cell ── */
+    .product-name-cell { display: flex; align-items: center; gap: 12px; }
+    .img-placeholder { width: 42px; height: 42px; border-radius: 10px; background: var(--rose-light); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
+
+    /* ── Activity ── */
+    .activity-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 20px; border-bottom: 1px solid rgba(200,82,107,0.07); }
+    .activity-item:last-child { border-bottom: none; }
+    .activity-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--rose); margin-top: 5px; flex-shrink: 0; }
+    .activity-dot.gold  { background: var(--gold); }
+    .activity-dot.green { background: #10b981; }
+    .activity-text { font-size: 0.87rem; color: var(--text); line-height: 1.5; }
+    .activity-time { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── Two-col ── */
+    .two-col { display: grid; grid-template-columns: 1.6fr 1fr; gap: 22px; margin-bottom: 28px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .two-col { grid-template-columns: 1fr; }
+      .form-grid { grid-template-columns: 1fr; }
+      .form-row.full { grid-column: auto; }
+    }
+
+    @media (max-width: 560px) {
+      .stats-grid { grid-template-columns: 1fr; }
+      .main { padding: 18px 14px 40px; }
+      .login-card { padding: 36px 22px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     LOGIN SCREEN
+══════════════════════════════════════════ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-brand">
+      <div class="name">Buharl<span>Collections</span></div>
+      <div class="sub">Admin Portal</div>
+    </div>
+
+    <h2>Welcome back</h2>
+
+    <form class="login-form" id="loginForm" onsubmit="handleLogin(event)">
+      <div class="l-field">
+        <label for="loginUser">Username</label>
+        <input type="text" id="loginUser" placeholder="Enter username" autocomplete="username" />
+      </div>
+      <div class="l-field">
+        <label for="loginPass">Password</label>
+        <input type="password" id="loginPass" placeholder="Enter password" autocomplete="current-password" />
+      </div>
+      <div id="loginAlert" class="login-alert"></div>
+      <button type="submit" class="login-btn" id="loginBtn">Sign In</button>
+    </form>
+
+    <p class="login-hint">
+      Demo credentials:<br>
+      <span>admin &nbsp;/&nbsp; buharl2026</span>
+    </p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     DASHBOARD
+══════════════════════════════════════════ -->
+<div id="dashboard">
+<div class="layout">
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="name">Buharl<span>Collections</span></div>
+      <div class="sub">Admin Panel</div>
+    </div>
+
+    <div class="nav-section">Main</div>
+    <button class="nav-item active" onclick="showPanel('dashboard', this)">
+      <span class="icon">🏠</span> Dashboard
+    </button>
+    <button class="nav-item" onclick="showPanel('orders', this)">
+      <span class="icon">📬</span> Orders &amp; Inquiries <span class="notif"></span>
+    </button>
+    <button class="nav-item" onclick="showPanel('products', this)">
+      <span class="icon">👗</span> Products
+    </button>
+    <button class="nav-item" onclick="showPanel('blog', this)">
+      <span class="icon">📝</span> Blog Posts
+    </button>
+
+    <div class="nav-section">Manage</div>
+    <button class="nav-item" onclick="showPanel('customers', this)">
+      <span class="icon">👥</span> Customers
+    </button>
+    <button class="nav-item" onclick="showPanel('settings', this)">
+      <span class="icon">⚙️</span> Settings
+    </button>
+
+    <div class="sidebar-footer">
+      <a href="Buharl collections .html">🌐 &nbsp;View Website</a>
+      <button onclick="logout()">🔓 &nbsp;Log Out</button>
+    </div>
+  </aside>
+
+  <!-- Topbar -->
+  <header class="topbar">
+    <div class="topbar-title" id="topbarTitle">Dashboard</div>
+    <div class="topbar-right">
+      <span class="admin-pill">Admin</span>
+      <div class="avatar" id="avatarInitial">BC</div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main class="main">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="panel active" id="panel-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Total Inquiries</div>
+          <div class="stat-value">47</div>
+          <div class="stat-sub">All time</div>
+          <div class="mini-bars">
+            <div class="mini-bar" style="height:40%; background:var(--rose-light);"></div>
+            <div class="mini-bar" style="height:55%; background:var(--rose-light);"></div>
+            <div class="mini-bar" style="height:45%; background:var(--rose-light);"></div>
+            <div class="mini-bar" style="height:70%; background:var(--rose-light);"></div>
+            <div class="mini-bar" style="height:60%; background:var(--rose-light);"></div>
+            <div class="mini-bar" style="height:80%; background:var(--rose-light);"></div>
+            <div class="mini-bar" style="height:100%; background:var(--rose);"></div>
+          </div>
+        </div>
+        <div class="stat-card gold">
+          <div class="stat-label">Products Listed</div>
+          <div class="stat-value">28</div>
+          <div class="stat-sub">Across 4 categories</div>
+          <div class="mini-bars">
+            <div class="mini-bar" style="height:50%; background:#fde68a;"></div>
+            <div class="mini-bar" style="height:65%; background:#fde68a;"></div>
+            <div class="mini-bar" style="height:75%; background:#fde68a;"></div>
+            <div class="mini-bar" style="height:60%; background:#fde68a;"></div>
+            <div class="mini-bar" style="height:80%; background:#fde68a;"></div>
+            <div class="mini-bar" style="height:70%; background:#fde68a;"></div>
+            <div class="mini-bar" style="height:100%; background:var(--gold);"></div>
+          </div>
+        </div>
+        <div class="stat-card green">
+          <div class="stat-label">Replied</div>
+          <div class="stat-value">31</div>
+          <div class="stat-sub">66% response rate</div>
+          <div class="mini-bars">
+            <div class="mini-bar" style="height:30%; background:#6ee7b7;"></div>
+            <div class="mini-bar" style="height:50%; background:#6ee7b7;"></div>
+            <div class="mini-bar" style="height:65%; background:#6ee7b7;"></div>
+            <div class="mini-bar" style="height:55%; background:#6ee7b7;"></div>
+            <div class="mini-bar" style="height:75%; background:#6ee7b7;"></div>
+            <div class="mini-bar" style="height:85%; background:#6ee7b7;"></div>
+            <div class="mini-bar" style="height:100%; background:#10b981;"></div>
+          </div>
+        </div>
+        <div class="stat-card blue">
+          <div class="stat-label">Pending</div>
+          <div class="stat-value">16</div>
+          <div class="stat-sub">Needs attention</div>
+          <div class="mini-bars">
+            <div class="mini-bar" style="height:60%; background:#a5b4fc;"></div>
+            <div class="mini-bar" style="height:40%; background:#a5b4fc;"></div>
+            <div class="mini-bar" style="height:70%; background:#a5b4fc;"></div>
+            <div class="mini-bar" style="height:50%; background:#a5b4fc;"></div>
+            <div class="mini-bar" style="height:80%; background:#a5b4fc;"></div>
+            <div class="mini-bar" style="height:55%; background:#a5b4fc;"></div>
+            <div class="mini-bar" style="height:100%; background:#6366f1;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-bar">
+            <h2>Recent Inquiries</h2>
+            <button class="btn btn-outline btn-sm" onclick="showPanel('orders', document.querySelectorAll('.nav-item')[1])">View All</button>
+          </div>
+          <div class="table-card">
+            <table class="data-table">
+              <thead><tr><th>Name</th><th>Interest</th><th>Date</th><th>Status</th></tr></thead>
+              <tbody>
+                <tr><td><strong>Amina Osei</strong><br><span class="td-muted">amina.osei@gmail.com</span></td><td><span class="pill pill-occasion">Occasion</span></td><td class="td-muted">01 Sep 2026</td><td><span class="pill pill-replied">Replied</span></td></tr>
+                <tr><td><strong>James Mwangi</strong><br><span class="td-muted">j.mwangi@outlook.com</span></td><td><span class="pill pill-kids">Kidswear</span></td><td class="td-muted">03 Sep 2026</td><td><span class="pill pill-replied">Replied</span></td></tr>
+                <tr><td><strong>Sophie Laurent</strong><br><span class="td-muted">sophie.l@yahoo.fr</span></td><td><span class="pill pill-casual">Casual</span></td><td class="td-muted">05 Sep 2026</td><td><span class="pill pill-pending">Pending</span></td></tr>
+                <tr><td><strong>Fatima Al-Hassan</strong><br><span class="td-muted">fatima.h@hotmail.com</span></td><td><span class="pill pill-seasonal">Seasonal</span></td><td class="td-muted">09 Sep 2026</td><td><span class="pill pill-new">New</span></td></tr>
+                <tr><td><strong>Kevin Otieno</strong><br><span class="td-muted">kevin.otieno@gmail.com</span></td><td><span class="pill pill-occasion">Occasion</span></td><td class="td-muted">11 Sep 2026</td><td><span class="pill pill-pending">Pending</span></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <div class="section-bar"><h2>Recent Activity</h2></div>
+          <div class="table-card">
+            <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-text">New inquiry from <strong>Fatima Al-Hassan</strong></div><div class="activity-time">2 hours ago</div></div></div>
+            <div class="activity-item"><div class="activity-dot gold"></div><div><div class="activity-text">Product <strong>"Evening Gown"</strong> updated</div><div class="activity-time">5 hours ago</div></div></div>
+            <div class="activity-item"><div class="activity-dot green"></div><div><div class="activity-text">Replied to <strong>James Mwangi</strong>'s order</div><div class="activity-time">Yesterday</div></div></div>
+            <div class="activity-item"><div class="activity-dot"></div><div><div class="activity-text">New inquiry from <strong>Kevin Otieno</strong></div><div class="activity-time">Yesterday</div></div></div>
+            <div class="activity-item"><div class="activity-dot gold"></div><div><div class="activity-text">Blog post <strong>"Capsule Wardrobe"</strong> published</div><div class="activity-time">10 Sep 2026</div></div></div>
+            <div class="activity-item"><div class="activity-dot green"></div><div><div class="activity-text">New product <strong>"Kids Party Set"</strong> added</div><div class="activity-time">8 Sep 2026</div></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── ORDERS ── -->
+    <div class="panel" id="panel-orders">
+      <div class="section-bar">
+        <h2>All Orders &amp; Inquiries</h2>
+        <input type="search" class="search-box" placeholder="Search name, email…" oninput="filterTable('ordersTable', this.value)" />
+      </div>
+      <div class="table-card">
+        <table class="data-table" id="ordersTable">
+          <thead><tr><th>#</th><th>Customer</th><th>Interest</th><th>Message</th><th>Date</th><th>Status</th><th>Action</th></tr></thead>
+          <tbody>
+            <tr><td class="td-muted">1</td><td><strong>Amina Osei</strong><br><span class="td-muted">amina.osei@gmail.com</span></td><td><span class="pill pill-occasion">Occasion</span></td><td class="td-muted" style="max-width:200px;">5-day event outfit for October wedding.</td><td class="td-muted">01 Sep 2026</td><td><span class="pill pill-replied">Replied</span></td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+            <tr><td class="td-muted">2</td><td><strong>James Mwangi</strong><br><span class="td-muted">j.mwangi@outlook.com</span></td><td><span class="pill pill-kids">Kidswear</span></td><td class="td-muted" style="max-width:200px;">Matching outfits for twins, ages 4.</td><td class="td-muted">03 Sep 2026</td><td><span class="pill pill-replied">Replied</span></td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+            <tr><td class="td-muted">3</td><td><strong>Sophie Laurent</strong><br><span class="td-muted">sophie.l@yahoo.fr</span></td><td><span class="pill pill-casual">Casual</span></td><td class="td-muted" style="max-width:200px;">Looking for casual linen sets in size M.</td><td class="td-muted">05 Sep 2026</td><td><span class="pill pill-pending">Pending</span></td><td><button class="btn btn-rose btn-sm">Reply</button></td></tr>
+            <tr><td class="td-muted">4</td><td><strong>David Kariuki</strong><br><span class="td-muted">dkariuki@icloud.com</span></td><td><span class="pill pill-occasion">Occasion</span></td><td class="td-muted" style="max-width:200px;">Graduation dress, size 10, champagne.</td><td class="td-muted">07 Sep 2026</td><td><span class="pill pill-replied">Replied</span></td><td><button class="btn btn-outline btn-sm">View</button></td></tr>
+            <tr><td class="td-muted">5</td><td><strong>Fatima Al-Hassan</strong><br><span class="td-muted">fatima.h@hotmail.com</span></td><td><span class="pill pill-seasonal">Seasonal</span></td><td class="td-muted" style="max-width:200px;">Is halal fabric-certified clothing available?</td><td class="td-muted">09 Sep 2026</td><td><span class="pill pill-new">New</span></td><td><button class="btn btn-rose btn-sm">Reply</button></td></tr>
+            <tr><td class="td-muted">6</td><td><strong>Kevin Otieno</strong><br><span class="td-muted">kevin.otieno@gmail.com</span></td><td><span class="pill pill-occasion">Occasion</span></td><td class="td-muted" style="max-width:200px;">Honeymoon outfits — beach &amp; dinner.</td><td class="td-muted">11 Sep 2026</td><td><span class="pill pill-pending">Pending</span></td><td><button class="btn btn-rose btn-sm">Reply</button></td></tr>
+            <tr><td class="td-muted">7</td><td><strong>Grace Otieno</strong><br><span class="td-muted">grace.o@gmail.com</span></td><td><span class="pill pill-casual">Casual</span></td><td class="td-muted" style="max-width:200px;">Co-ord sets in sizes S and L.</td><td class="td-muted">15 Sep 2026</td><td><span class="pill pill-new">New</span></td><td><button class="btn btn-rose btn-sm">Reply</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── PRODUCTS ── -->
+    <div class="panel" id="panel-products">
+      <div class="section-bar">
+        <h2>Products</h2>
+        <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
+          <input type="search" class="search-box" placeholder="Search products…" oninput="filterTable('productsTable', this.value)" />
+          <button class="btn btn-rose" onclick="toggleForm('addProductForm')">+ Add Product</button>
+        </div>
+      </div>
+      <div class="form-card" id="addProductForm" style="display:none;">
+        <h3>Add New Product</h3>
+        <div class="form-grid">
+          <div class="form-row"><label>Product Name</label><input type="text" placeholder="e.g. Floral Summer Dress" /></div>
+          <div class="form-row"><label>Category</label><select><option>Kidswear</option><option>Casual Wear</option><option>Special Occasion</option><option>Seasonal</option></select></div>
+          <div class="form-row full"><label>Description</label><textarea placeholder="Describe the product…"></textarea></div>
+          <div class="form-row"><label>Price (UGX)</label><input type="number" placeholder="950000" /></div>
+          <div class="form-row"><label>Sizes Available</label><input type="text" placeholder="XS, S, M, L, XL" /></div>
+          <div class="form-row"><label>Status</label><select><option>Active</option><option>Draft</option><option>Out of Stock</option></select></div>
+          <div class="form-row"><label>Image URL (optional)</label><input type="url" placeholder="https://…" /></div>
+        </div>
+        <div style="margin-top:20px; display:flex; gap:10px;">
+          <button class="btn btn-rose" onclick="toggleForm('addProductForm')">Save Product</button>
+          <button class="btn btn-outline" onclick="toggleForm('addProductForm')">Cancel</button>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table" id="productsTable">
+          <thead><tr><th>Product</th><th>Category</th><th>Price</th><th>Sizes</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><div class="product-name-cell"><div class="img-placeholder">👗</div><div><strong>Floral Summer Dress</strong><br><span class="td-muted">Added 1 Sep 2026</span></div></div></td><td><span class="pill pill-casual">Casual</span></td><td>UGX 1,064,000</td><td class="td-muted">XS, S, M, L</td><td><span class="pill pill-active">Active</span></td><td style="display:flex;gap:8px;padding-top:13px;"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;">Delete</button></td></tr>
+            <tr><td><div class="product-name-cell"><div class="img-placeholder">🧒</div><div><strong>Kids Party Set</strong><br><span class="td-muted">Added 3 Sep 2026</span></div></div></td><td><span class="pill pill-kids">Kidswear</span></td><td>UGX 684,000</td><td class="td-muted">2–4yr, 5–8yr</td><td><span class="pill pill-active">Active</span></td><td style="display:flex;gap:8px;padding-top:13px;"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;">Delete</button></td></tr>
+            <tr><td><div class="product-name-cell"><div class="img-placeholder">✨</div><div><strong>Evening Elegance Gown</strong><br><span class="td-muted">Added 5 Sep 2026</span></div></div></td><td><span class="pill pill-occasion">Occasion</span></td><td>UGX 2,090,000</td><td class="td-muted">S, M, L, XL</td><td><span class="pill pill-active">Active</span></td><td style="display:flex;gap:8px;padding-top:13px;"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;">Delete</button></td></tr>
+            <tr><td><div class="product-name-cell"><div class="img-placeholder">🍂</div><div><strong>Autumn Knit Set</strong><br><span class="td-muted">Added 8 Sep 2026</span></div></div></td><td><span class="pill pill-seasonal">Seasonal</span></td><td>UGX 1,216,000</td><td class="td-muted">S, M, L</td><td><span class="pill pill-draft">Draft</span></td><td style="display:flex;gap:8px;padding-top:13px;"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;">Delete</button></td></tr>
+            <tr><td><div class="product-name-cell"><div class="img-placeholder">🎀</div><div><strong>Girls Frilly Dress</strong><br><span class="td-muted">Added 10 Sep 2026</span></div></div></td><td><span class="pill pill-kids">Kidswear</span></td><td>UGX 798,000</td><td class="td-muted">2–4yr, 5–8yr, 9–12yr</td><td><span class="pill pill-active">Active</span></td><td style="display:flex;gap:8px;padding-top:13px;"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;">Delete</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── BLOG ── -->
+    <div class="panel" id="panel-blog">
+      <div class="section-bar">
+        <h2>Blog Posts</h2>
+        <button class="btn btn-rose" onclick="toggleForm('addBlogForm')">+ New Post</button>
+      </div>
+      <div class="form-card" id="addBlogForm" style="display:none;">
+        <h3>Write New Blog Post</h3>
+        <div class="form-grid">
+          <div class="form-row full"><label>Post Title</label><input type="text" placeholder="e.g. How to Build a Capsule Wardrobe" /></div>
+          <div class="form-row"><label>Category / Tag</label><select><option>Style Tips</option><option>Kidswear</option><option>Occasions</option><option>Seasonal</option><option>Care Guide</option><option>Styling</option></select></div>
+          <div class="form-row"><label>Status</label><select><option>Published</option><option>Draft</option></select></div>
+          <div class="form-row full"><label>Excerpt / Summary</label><textarea placeholder="A short summary…"></textarea></div>
+          <div class="form-row full"><label>Cover Image URL (optional)</label><input type="url" placeholder="https://…" /></div>
+        </div>
+        <div style="margin-top:20px; display:flex; gap:10px;">
+          <button class="btn btn-rose" onclick="toggleForm('addBlogForm')">Publish Post</button>
+          <button class="btn btn-outline" onclick="toggleForm('addBlogForm')">Cancel</button>
+        </div>
+      </div>
+      <div class="table-card">
+        <table class="data-table">
+          <thead><tr><th>Title</th><th>Tag</th><th>Date</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody>
+            <tr><td><strong>How to Build a Capsule Wardrobe for Your Child</strong></td><td><span class="pill pill-kids">Kidswear</span></td><td class="td-muted">10 Sep 2026</td><td><span class="pill pill-active">Published</span></td><td style="display:flex;gap:8px;padding-top:13px;"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;">Delete</button></td></tr>
+            <tr><td><strong>How to Dress for Your Body Type &amp; Feel Confident</strong></td><td><span class="pill pill-casual">Style Tips</span></td><td class="td-muted">5 Sep 2026</td><td><span class="pill pill-active">Published</span></td><td style="display:flex;gap:8px;padding-top:13px;"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;">Delete</button></td></tr>
+            <tr><td><strong>5 Outfits to Transition From Warm Days to Cool Evenings</strong></td><td><span class="pill pill-seasonal">Seasonal</span></td><td class="td-muted">1 Sep 2026</td><td><span class="pill pill-active">Published</span></td><td style="display:flex;gap:8px;padding-top:13px;"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;">Delete</button></td></tr>
+            <tr><td><strong>The Ultimate Guide to Dressing for a Graduation Ceremony</strong></td><td><span class="pill pill-occasion">Occasions</span></td><td class="td-muted">20 Aug 2026</td><td><span class="pill pill-draft">Draft</span></td><td style="display:flex;gap:8px;padding-top:13px;"><button class="btn btn-outline btn-sm">Edit</button><button class="btn btn-sm" style="background:#fee2e2;color:#991b1b;">Delete</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── CUSTOMERS ── -->
+    <div class="panel" id="panel-customers">
+      <div class="section-bar">
+        <h2>Customers</h2>
+        <input type="search" class="search-box" placeholder="Search customers…" oninput="filterTable('customersTable', this.value)" />
+      </div>
+      <div class="table-card">
+        <table class="data-table" id="customersTable">
+          <thead><tr><th>#</th><th>Name</th><th>Email</th><th>Phone</th><th>Inquiries</th><th>Last Contact</th></tr></thead>
+          <tbody>
+            <tr><td class="td-muted">1</td><td><strong>Amina Osei</strong></td><td class="td-muted">amina.osei@gmail.com</td><td class="td-muted">+256 712 000 001</td><td>2</td><td class="td-muted">01 Sep 2026</td></tr>
+            <tr><td class="td-muted">2</td><td><strong>James Mwangi</strong></td><td class="td-muted">j.mwangi@outlook.com</td><td class="td-muted">+256 722 000 002</td><td>1</td><td class="td-muted">03 Sep 2026</td></tr>
+            <tr><td class="td-muted">3</td><td><strong>Sophie Laurent</strong></td><td class="td-muted">sophie.l@yahoo.fr</td><td class="td-muted">—</td><td>1</td><td class="td-muted">05 Sep 2026</td></tr>
+            <tr><td class="td-muted">4</td><td><strong>David Kariuki</strong></td><td class="td-muted">dkariuki@icloud.com</td><td class="td-muted">+256 733 000 004</td><td>3</td><td class="td-muted">07 Sep 2026</td></tr>
+            <tr><td class="td-muted">5</td><td><strong>Fatima Al-Hassan</strong></td><td class="td-muted">fatima.h@hotmail.com</td><td class="td-muted">+256 744 000 005</td><td>1</td><td class="td-muted">09 Sep 2026</td></tr>
+            <tr><td class="td-muted">6</td><td><strong>Kevin Otieno</strong></td><td class="td-muted">kevin.otieno@gmail.com</td><td class="td-muted">+256 755 000 006</td><td>2</td><td class="td-muted">11 Sep 2026</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ── SETTINGS ── -->
+    <div class="panel" id="panel-settings">
+      <div class="section-bar"><h2>Settings</h2></div>
+      <div class="form-card">
+        <h3>Business Information</h3>
+        <div class="form-grid">
+          <div class="form-row"><label>Business Name</label><input type="text" value="Buharl Collections" /></div>
+          <div class="form-row"><label>Admin Name</label><input type="text" placeholder="Your name" /></div>
+          <div class="form-row"><label>Email Address</label><input type="email" value="hello@buharlcollections.com" /></div>
+          <div class="form-row"><label>Phone / WhatsApp</label><input type="tel" value="+256 700 000 000" /></div>
+          <div class="form-row"><label>Location</label><input type="text" value="Nsambya, Kampala, Uganda" /></div>
+          <div class="form-row"><label>Currency</label><select><option selected>UGX — Ugandan Shilling</option><option>USD — US Dollar</option><option>EUR — Euro</option></select></div>
+          <div class="form-row full"><label>Business Description</label><textarea>Stylish, affordable fashion for children and adults. Bringing beauty to every moment since 2020.</textarea></div>
+        </div>
+        <div style="margin-top:20px;"><button class="btn btn-rose">Save Changes</button></div>
+      </div>
+      <div class="form-card">
+        <h3>Social Media Links</h3>
+        <div class="form-grid">
+          <div class="form-row"><label>Facebook</label><input type="url" placeholder="https://facebook.com/…" /></div>
+          <div class="form-row"><label>Instagram</label><input type="url" placeholder="https://instagram.com/…" /></div>
+          <div class="form-row"><label>TikTok</label><input type="url" placeholder="https://tiktok.com/@…" /></div>
+          <div class="form-row"><label>WhatsApp Number</label><input type="tel" placeholder="+256 700 000 000" /></div>
+        </div>
+        <div style="margin-top:20px;"><button class="btn btn-rose">Save Changes</button></div>
+      </div>
+    </div>
+
+  </main>
+</div>
+</div>
+
+<script>
+  // ── Credentials (frontend only) ──
+  const ADMIN_USER = 'admin';
+  const ADMIN_PASS = 'buharl2026';
+
+  // ── Login ──
+  function handleLogin(e) {
+    e.preventDefault();
+    const user = document.getElementById('loginUser').value.trim();
+    const pass = document.getElementById('loginPass').value;
+    const alert = document.getElementById('loginAlert');
+    const btn   = document.getElementById('loginBtn');
+
+    alert.className = 'login-alert';
+    alert.textContent = '';
+
+    if (!user || !pass) {
+      showError('Please enter both username and password.');
+      return;
+    }
+
+    if (user === ADMIN_USER && pass === ADMIN_PASS) {
+      btn.textContent = 'Signing in…';
+      btn.disabled = true;
+      setTimeout(() => {
+        document.getElementById('loginScreen').style.display = 'none';
+        document.getElementById('dashboard').style.display = 'block';
+        // Set avatar initials from username
+        document.getElementById('avatarInitial').textContent = user.slice(0,2).toUpperCase();
+      }, 700);
+    } else {
+      showError('Incorrect username or password. Try: admin / buharl2026');
+    }
+  }
+
+  function showError(msg) {
+    const el = document.getElementById('loginAlert');
+    el.textContent = msg;
+    el.className = 'login-alert error';
+    // Shake animation
+    el.style.animation = 'none';
+    el.offsetHeight;
+    el.style.animation = 'shake 0.4s ease';
+  }
+
+  // ── Logout ──
+  function logout() {
+    document.getElementById('dashboard').style.display = 'none';
+    document.getElementById('loginScreen').style.display = 'flex';
+    document.getElementById('loginUser').value = '';
+    document.getElementById('loginPass').value = '';
+    document.getElementById('loginBtn').textContent = 'Sign In';
+    document.getElementById('loginBtn').disabled = false;
+    document.getElementById('loginAlert').className = 'login-alert';
+  }
+
+  // ── Panel switching ──
+  const titles = { dashboard:'Dashboard', orders:'Orders & Inquiries', products:'Products', blog:'Blog Posts', customers:'Customers', settings:'Settings' };
+
+  function showPanel(id, btn) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panel-' + id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    document.getElementById('topbarTitle').textContent = titles[id] || id;
+  }
+
+  function toggleForm(id) {
+    const el = document.getElementById(id);
+    el.style.display = el.style.display === 'none' ? 'block' : 'none';
+  }
+
+  function filterTable(tableId, query) {
+    const q = query.toLowerCase();
+    document.querySelectorAll('#' + tableId + ' tbody tr').forEach(row => {
+      row.style.display = row.textContent.toLowerCase().includes(q) ? '' : 'none';
+    });
+  }
+
+  // ── Clear error on input ──
+  ['loginUser','loginPass'].forEach(id => {
+    document.getElementById(id).addEventListener('input', () => {
+      document.getElementById('loginAlert').className = 'login-alert';
+    });
+  });
+</script>
+
+</body>
+</html>
+
+

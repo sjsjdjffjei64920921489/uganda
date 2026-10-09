@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Sign In — Barya Travel Guide</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .signin-wrapper {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, var(--primary-dark) 0%, #5a3a78 100%);
+      padding: 24px;
+    }
+
+    .signin-card {
+      background: var(--white);
+      border-radius: 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.22);
+      padding: 48px 44px;
+      width: 100%;
+      max-width: 420px;
+    }
+
+    .signin-logo {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .signin-logo .brand {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+      letter-spacing: 0.04em;
+    }
+
+    .signin-logo .brand span {
+      color: var(--secondary);
+    }
+
+    .signin-logo p {
+      margin-top: 6px;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .signin-card h2 {
+      font-size: 1.5rem;
+      color: var(--primary-dark);
+      margin-bottom: 26px;
+      text-align: center;
+    }
+
+    .signin-form {
+      display: grid;
+      gap: 20px;
+    }
+
+    .form-field label {
+      display: block;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 7px;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .form-field input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid rgba(61, 42, 91, 0.2);
+      border-radius: 12px;
+      background: #fcfaff;
+      font-size: 1rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+      margin-top: 0;
+    }
+
+    .form-field input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(61, 42, 91, 0.1);
+    }
+
+    .form-field input::placeholder {
+      color: #b0a8c0;
+    }
+
+    .signin-btn {
+      width: 100%;
+      padding: 14px;
+      background: var(--primary);
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 700;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: background 0.2s ease, transform 0.15s ease;
+      margin-top: 4px;
+    }
+
+    .signin-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+    }
+
+    .signin-btn:active {
+      transform: translateY(0);
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 0.82rem;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: rgba(61, 42, 91, 0.12);
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 22px;
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .back-link a {
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    .back-link a:hover {
+      color: var(--secondary);
+    }
+
+    @media (max-width: 480px) {
+      .signin-card {
+        padding: 36px 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="signin-wrapper">
+    <div class="signin-card">
+
+      <div class="signin-logo">
+        <div class="brand">Barya<span>Travel</span></div>
+        <p>Admin Portal</p>
+      </div>
+
+      <h2>Welcome back</h2>
+
+      <form class="signin-form" action="admin.html">
+        <div class="form-field">
+          <label for="username">Username</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="Enter your username"
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="form-field">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter your password"
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" class="signin-btn">Sign In</button>
+      </form>
+
+      <div class="divider" style="margin-top: 24px;">or</div>
+
+      <p class="back-link">← Back to <a href="barya travel guide.html">Home</a></p>
+    </div>
+  </div>
+</body>
+</html>

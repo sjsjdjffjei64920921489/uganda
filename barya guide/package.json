@@ -1,0 +1,9 @@
+{
+  "name": "barya-travel-guide",
+  "version": "1.0.0",
+  "description": "Node.js backend for the Barya Travel Guide website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

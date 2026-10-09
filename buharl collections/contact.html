@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact — Buharl Collections</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ── Header ── -->
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav-wrap">
+        <div class="brand">Buharl<span>Collections</span></div>
+        <ul class="main-nav">
+          <li><a href="Buharl collections .html">Home</a></li>
+          <li><a href="services.html">Services</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html" class="active">Contact</a></li>
+        </ul>
+        <a href="contact.html" class="btn btn-primary" style="font-size:0.85rem; padding:10px 22px;">Shop Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ── Page Hero ── -->
+  <section class="page-hero">
+    <div class="container">
+      <span style="display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:999px; padding:5px 18px; font-family:Arial,sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:18px;">We'd Love to Hear From You</span>
+      <h1>Get in Touch</h1>
+      <p>Place an order, ask about a custom outfit, or just say hello — we're happy to help.</p>
+    </div>
+  </section>
+
+  <!-- ── Contact section ── -->
+  <section class="section">
+    <div class="container">
+      <div class="contact-wrap">
+
+        <!-- Info panel -->
+        <div class="contact-info">
+          <h3>Contact Information</h3>
+          <ul class="contact-list">
+            <li>
+              <span class="icon">📍</span>
+              <div>
+                <strong>Location</strong>
+                Nsambya, Kampala, Uganda
+              </div>
+            </li>
+            <li>
+              <span class="icon">📞</span>
+              <div>
+                <strong>Phone / WhatsApp</strong>
+                <a href="tel:+256700000000" style="color:var(--rose);">+256 700 000 000</a>
+              </div>
+            </li>
+            <li>
+              <span class="icon">✉️</span>
+              <div>
+                <strong>Email</strong>
+                <a href="mailto:hello@buharlcollections.com" style="color:var(--rose);">hello@buharlcollections.com</a>
+              </div>
+            </li>
+            <li>
+              <span class="icon">🕐</span>
+              <div>
+                <strong>Business Hours</strong>
+                Mon – Sat: 8:00 AM – 7:00 PM<br/>
+                Sunday: 10:00 AM – 4:00 PM
+              </div>
+            </li>
+          </ul>
+
+          <div style="margin-top:32px; padding-top:24px; border-top:1px solid rgba(200,82,107,0.12);">
+            <h3 style="font-size:1.1rem; color:var(--rose-dark); margin-bottom:14px;">Follow Us</h3>
+            <div style="display:flex; gap:12px; flex-wrap:wrap;">
+              <a href="#" style="background:var(--rose-light); color:var(--rose-dark); border-radius:999px; padding:8px 18px; font-family:Arial,sans-serif; font-size:0.82rem; font-weight:700;">📘 Facebook</a>
+              <a href="#" style="background:var(--rose-light); color:var(--rose-dark); border-radius:999px; padding:8px 18px; font-family:Arial,sans-serif; font-size:0.82rem; font-weight:700;">📸 Instagram</a>
+              <a href="#" style="background:var(--rose-light); color:var(--rose-dark); border-radius:999px; padding:8px 18px; font-family:Arial,sans-serif; font-size:0.82rem; font-weight:700;">▶️ TikTok</a>
+            </div>
+          </div>
+
+          <!-- Quick FAQs -->
+          <div style="margin-top:32px; padding-top:24px; border-top:1px solid rgba(200,82,107,0.12);">
+            <h3 style="font-size:1.1rem; color:var(--rose-dark); margin-bottom:16px;">Quick FAQs</h3>
+            <div style="display:grid; gap:14px;">
+              <div>
+                <p style="font-family:Arial,sans-serif; font-size:0.88rem; font-weight:700; color:var(--text);">Do you deliver?</p>
+                <p style="font-family:Arial,sans-serif; font-size:0.85rem; color:var(--muted);">Yes — we deliver within Kampala and can arrange courier services for other regions.</p>
+              </div>
+              <div>
+                <p style="font-family:Arial,sans-serif; font-size:0.88rem; font-weight:700; color:var(--text);">How long does a custom order take?</p>
+                <p style="font-family:Arial,sans-serif; font-size:0.85rem; color:var(--muted);">Most custom orders are ready within 5–10 business days depending on complexity.</p>
+              </div>
+              <div>
+                <p style="font-family:Arial,sans-serif; font-size:0.88rem; font-weight:700; color:var(--text);">Do you accept returns?</p>
+                <p style="font-family:Arial,sans-serif; font-size:0.85rem; color:var(--muted);">We accept exchanges within 7 days of purchase for non-custom items.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact form -->
+        <div class="contact-form-card">
+          <h3>Send Us a Message</h3>
+          <form id="contactForm" onsubmit="handleSubmit(event)">
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+              <div class="form-row">
+                <label for="firstName">First Name</label>
+                <input type="text" id="firstName" placeholder="Amina" required />
+              </div>
+              <div class="form-row">
+                <label for="lastName">Last Name</label>
+                <input type="text" id="lastName" placeholder="Osei" required />
+              </div>
+            </div>
+            <div class="form-row">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-row">
+              <label for="phone">Phone / WhatsApp (optional)</label>
+              <input type="tel" id="phone" placeholder="+256 700 000 000" />
+            </div>
+            <div class="form-row">
+              <label for="interest">I'm interested in</label>
+              <select id="interest">
+                <option value="">— Select a category —</option>
+                <option>Kidswear</option>
+                <option>Casual Daily Wear</option>
+                <option>Special Occasion Outfit</option>
+                <option>Seasonal Picks</option>
+                <option>Custom Order</option>
+                <option>General Enquiry</option>
+              </select>
+            </div>
+            <div class="form-row">
+              <label for="message">Your Message</label>
+              <textarea id="message" placeholder="Tell us what you're looking for, your size, occasion, or any special requests…" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%; padding:14px;">Send Message</button>
+            <div id="formMsg" style="display:none; margin-top:14px; padding:12px 16px; border-radius:12px; font-family:Arial,sans-serif; font-size:0.92rem; font-weight:600; text-align:center;"></div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Map placeholder ── -->
+  <section style="background: var(--soft); padding: 0;">
+    <div style="width:100%; height:260px; background: linear-gradient(135deg, var(--rose-light), #fdf0e8); display:flex; align-items:center; justify-content:center; flex-direction:column; gap:10px;">
+      <div style="font-size:2.5rem;">📍</div>
+      <p style="font-family:Arial,sans-serif; font-weight:700; color:var(--rose-dark); font-size:1rem;">Nsambya, Kampala, Uganda</p>
+      <p style="font-family:Arial,sans-serif; color:var(--muted); font-size:0.88rem;">Visit us in Nsambya or contact us to arrange a fitting</p>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">Buharl<span>Collections</span></div>
+          <p>Stylish, affordable fashion for children and adults. Bringing beauty to every moment since 2020.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="Buharl collections .html">Home</a></li>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Collections</h4>
+          <ul>
+            <li><a href="services.html">Kidswear</a></li>
+            <li><a href="services.html">Casual Wear</a></li>
+            <li><a href="services.html">Special Occasions</a></li>
+            <li><a href="services.html">Seasonal Picks</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:hello@buharlcollections.com">hello@buharlcollections.com</a></li>
+            <li><a href="tel:+256700000000">+256 700 000 000</a></li>
+            <li><a href="contact.html">Send a Message</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">&copy; 2026 Buharl Collections. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <script>
+    function handleSubmit(e) {
+      e.preventDefault();
+      const msg = document.getElementById('formMsg');
+      msg.style.display = 'block';
+      msg.style.background = 'rgba(16,185,129,0.1)';
+      msg.style.color = '#065f46';
+      msg.style.border = '1px solid rgba(16,185,129,0.25)';
+      msg.textContent = '✓ Message sent! We\'ll get back to you within 24 hours.';
+      document.getElementById('contactForm').reset();
+    }
+  </script>
+
+</body>
+</html>
+

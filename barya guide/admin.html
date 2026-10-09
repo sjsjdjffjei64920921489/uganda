@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — Barya Travel Guide</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    body { background: #f4f0fa; }
+
+    /* ── Top bar ── */
+    .admin-topbar {
+      background: var(--primary-dark);
+      color: var(--white);
+      padding: 0 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 64px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .admin-topbar .brand { font-size: 1.5rem; font-weight: 800; letter-spacing: 0.04em; color: var(--white); }
+    .admin-topbar .brand span { color: var(--secondary); }
+    .topbar-right { display: flex; align-items: center; gap: 14px; }
+    .admin-badge {
+      background: rgba(244,185,66,0.18); color: var(--secondary);
+      border: 1px solid rgba(244,185,66,0.35); border-radius: 999px;
+      padding: 4px 14px; font-size: 0.78rem; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .logout-btn {
+      background: rgba(255,255,255,0.1); color: var(--white);
+      border: 1px solid rgba(255,255,255,0.25); border-radius: 999px;
+      padding: 7px 18px; font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s; text-decoration: none;
+    }
+    .logout-btn:hover { background: rgba(255,255,255,0.22); }
+
+    /* ── Page wrapper ── */
+    .admin-main { max-width: 1200px; margin: 0 auto; padding: 36px 24px 60px; }
+    .page-title { font-size: 1.7rem; color: var(--primary-dark); margin-bottom: 28px; font-weight: 800; }
+
+    /* ── Stats ── */
+    .stats-row { display: grid; grid-template-columns: repeat(4, minmax(0,1fr)); gap: 18px; margin-bottom: 36px; }
+    .stat-card {
+      background: var(--white); border-radius: 18px; padding: 22px 24px;
+      box-shadow: 0 6px 20px rgba(61,42,91,0.08); border-top: 4px solid var(--primary);
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .stat-card.gold  { border-top-color: var(--secondary); }
+    .stat-card.green { border-top-color: #10b981; }
+    .stat-card.pink  { border-top-color: #ec4899; }
+    .stat-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); }
+    .stat-value { font-size: 2.2rem; font-weight: 800; color: var(--primary-dark); line-height: 1; }
+    .stat-sub { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── Toolbar ── */
+    .section-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 12px; }
+    .section-bar h2 { font-size: 1.2rem; color: var(--primary-dark); font-weight: 800; }
+    .toolbar-right { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    .search-box {
+      padding: 9px 18px; border: 1.5px solid rgba(61,42,91,0.18);
+      border-radius: 999px; font-size: 0.9rem; width: 220px;
+      background: var(--white); transition: border-color 0.2s;
+    }
+    .search-box:focus { outline: none; border-color: var(--primary); }
+
+    .filter-select {
+      padding: 9px 14px; border: 1.5px solid rgba(61,42,91,0.18);
+      border-radius: 999px; font-size: 0.88rem; background: var(--white);
+      color: var(--text); cursor: pointer;
+    }
+    .filter-select:focus { outline: none; border-color: var(--primary); }
+
+    .refresh-btn {
+      padding: 9px 18px; border-radius: 999px; border: 1.5px solid rgba(61,42,91,0.18);
+      background: var(--white); font-size: 0.88rem; font-weight: 700;
+      color: var(--primary-dark); cursor: pointer; transition: background 0.2s;
+    }
+    .refresh-btn:hover { background: #f0ebff; }
+
+    /* ── Table card ── */
+    .table-card { background: var(--white); border-radius: 20px; box-shadow: 0 8px 28px rgba(61,42,91,0.08); overflow: hidden; }
+    .inquiry-table { width: 100%; border-collapse: collapse; font-size: 0.91rem; }
+    .inquiry-table thead { background: var(--primary-dark); color: var(--white); }
+    .inquiry-table th { padding: 14px 16px; text-align: left; font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 700; white-space: nowrap; }
+    .inquiry-table tbody tr { border-bottom: 1px solid rgba(61,42,91,0.07); transition: background 0.15s; }
+    .inquiry-table tbody tr:last-child { border-bottom: none; }
+    .inquiry-table tbody tr:hover { background: #f9f5ff; }
+    .inquiry-table td { padding: 13px 16px; vertical-align: middle; }
+
+    .td-num  { color: var(--muted); font-size: 0.8rem; font-weight: 700; width: 36px; }
+    .td-name { font-weight: 700; color: var(--primary-dark); white-space: nowrap; }
+    .td-email a { color: var(--primary); font-weight: 600; }
+    .td-email a:hover { color: var(--secondary); }
+    .td-phone { color: var(--muted); font-size: 0.86rem; white-space: nowrap; }
+    .td-message { color: var(--muted); max-width: 280px; font-size: 0.88rem; }
+    .td-date { color: var(--muted); font-size: 0.83rem; white-space: nowrap; }
+
+    /* ── Status pill + select ── */
+    .status-pill {
+      display: inline-block; padding: 4px 12px; border-radius: 999px;
+      font-size: 0.73rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .status-new     { background: #ede9fe; color: #5b21b6; }
+    .status-replied { background: #d1fae5; color: #065f46; }
+    .status-pending { background: #fef9c3; color: #854d0e; }
+
+    .status-select {
+      padding: 5px 10px; border-radius: 8px; font-size: 0.82rem; font-weight: 700;
+      border: 1.5px solid rgba(61,42,91,0.18); background: #faf8ff;
+      cursor: pointer; color: var(--primary-dark);
+    }
+    .status-select:focus { outline: none; border-color: var(--primary); }
+
+    /* ── Delete button ── */
+    .del-btn {
+      background: none; border: none; cursor: pointer; color: #dc2626;
+      font-size: 1rem; padding: 4px 8px; border-radius: 8px;
+      transition: background 0.15s;
+    }
+    .del-btn:hover { background: #fee2e2; }
+
+    /* ── Loading / empty / error states ── */
+    .state-row td {
+      text-align: center; padding: 52px 24px;
+      color: var(--muted); font-size: 1rem;
+    }
+
+    /* ── Toast notification ── */
+    #toast {
+      position: fixed; bottom: 28px; right: 28px; z-index: 999;
+      background: #26153d; color: #fff; padding: 14px 22px;
+      border-radius: 12px; font-size: 0.92rem; font-weight: 600;
+      box-shadow: 0 8px 28px rgba(0,0,0,0.22);
+      transform: translateY(80px); opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      pointer-events: none;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.toast-error { background: #991b1b; }
+
+    /* ── Footer ── */
+    .admin-footer { text-align: center; padding: 20px; font-size: 0.82rem; color: var(--muted); border-top: 1px solid rgba(61,42,91,0.08); margin-top: 40px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 860px) { .stats-row { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 600px) {
+      .stats-row { grid-template-columns: 1fr; }
+      .admin-topbar { padding: 0 16px; }
+      .admin-main { padding: 24px 14px 48px; }
+      .inquiry-table th:nth-child(4), .inquiry-table td:nth-child(4),
+      .inquiry-table th:nth-child(5), .inquiry-table td:nth-child(5) { display: none; }
+      .search-box { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top bar -->
+  <header class="admin-topbar">
+    <div class="brand">Barya<span>Travel</span></div>
+    <div class="topbar-right">
+      <span class="admin-badge">Admin</span>
+      <a href="signin.html" class="logout-btn">Log Out</a>
+    </div>
+  </header>
+
+  <!-- Main content -->
+  <main class="admin-main">
+    <h1 class="page-title">Dashboard</h1>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-label">Total Inquiries</div>
+        <div class="stat-value" id="statTotal">—</div>
+        <div class="stat-sub">All time</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-label">New</div>
+        <div class="stat-value" id="statNew">—</div>
+        <div class="stat-sub">Awaiting response</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-label">Replied</div>
+        <div class="stat-value" id="statReplied">—</div>
+        <div class="stat-sub">Responded</div>
+      </div>
+      <div class="stat-card pink">
+        <div class="stat-label">Pending</div>
+        <div class="stat-value" id="statPending">—</div>
+        <div class="stat-sub">In progress</div>
+      </div>
+    </div>
+
+    <!-- Table toolbar -->
+    <div class="section-bar">
+      <h2>Customer Inquiries</h2>
+      <div class="toolbar-right">
+        <input type="search" class="search-box" id="searchInput" placeholder="Search name, email…" aria-label="Search inquiries" />
+        <select class="filter-select" id="filterStatus" aria-label="Filter by status">
+          <option value="">All statuses</option>
+          <option value="new">New</option>
+          <option value="pending">Pending</option>
+          <option value="replied">Replied</option>
+        </select>
+        <button class="refresh-btn" id="refreshBtn" aria-label="Refresh inquiries">⟳ Refresh</button>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <table class="inquiry-table" id="inquiryTable" aria-label="Customer inquiries">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Message</th>
+            <th>Date</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody">
+          <tr class="state-row"><td colspan="8">⏳ Loading inquiries…</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+
+  <footer class="admin-footer">
+    &copy; 2026 Barya Travel Guide — Admin Dashboard
+  </footer>
+
+  <!-- Toast -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    // ── Helpers ────────────────────────────────────────────────
+    let allRows = [];
+
+    function fmt(dateStr) {
+      const d = new Date(dateStr);
+      return isNaN(d) ? dateStr : d.toLocaleDateString('en-GB', { day:'2-digit', month:'short', year:'numeric' });
+    }
+
+    function showToast(msg, isError = false) {
+      const t = document.getElementById('toast');
+      t.textContent  = msg;
+      t.className    = 'show' + (isError ? ' toast-error' : '');
+      clearTimeout(t._timer);
+      t._timer = setTimeout(() => { t.className = ''; }, 3200);
+    }
+
+    function updateStats(stats) {
+      document.getElementById('statTotal').textContent   = stats.total   ?? 0;
+      document.getElementById('statNew').textContent     = stats.new     ?? 0;
+      document.getElementById('statReplied').textContent = stats.replied ?? 0;
+      document.getElementById('statPending').textContent = stats.pending ?? 0;
+    }
+
+    // ── Render table ───────────────────────────────────────────
+    function renderTable(rows) {
+      const tbody = document.getElementById('tableBody');
+
+      if (!rows.length) {
+        tbody.innerHTML = '<tr class="state-row"><td colspan="8">📭 No inquiries found.</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = rows.map((r, i) => `
+        <tr data-id="${r.id}">
+          <td class="td-num">${i + 1}</td>
+          <td class="td-name">${esc(r.name)}</td>
+          <td class="td-email"><a href="mailto:${esc(r.email)}">${esc(r.email)}</a></td>
+          <td class="td-phone">${r.phone ? esc(r.phone) : '<span style="color:#ccc">—</span>'}</td>
+          <td class="td-message">${esc(r.message)}</td>
+          <td class="td-date">${fmt(r.created_at)}</td>
+          <td>
+            <select class="status-select" data-id="${r.id}" aria-label="Change status for ${esc(r.name)}">
+              <option value="new"     ${r.status==='new'     ?'selected':''}>🔵 New</option>
+              <option value="pending" ${r.status==='pending' ?'selected':''}>🟡 Pending</option>
+              <option value="replied" ${r.status==='replied' ?'selected':''}>🟢 Replied</option>
+            </select>
+          </td>
+          <td>
+            <button class="del-btn" data-id="${r.id}" title="Delete inquiry" aria-label="Delete inquiry from ${esc(r.name)}">🗑</button>
+          </td>
+        </tr>
+      `).join('');
+
+      // status change listeners
+      tbody.querySelectorAll('.status-select').forEach(sel => {
+        sel.addEventListener('change', () => changeStatus(+sel.dataset.id, sel.value, sel));
+      });
+
+      // delete listeners
+      tbody.querySelectorAll('.del-btn').forEach(btn => {
+        btn.addEventListener('click', () => deleteInquiry(+btn.dataset.id, btn));
+      });
+    }
+
+    // escape HTML to prevent XSS
+    function esc(str) {
+      return String(str ?? '')
+        .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+        .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+
+    // ── Filter + search ────────────────────────────────────────
+    function applyFilters() {
+      const q      = document.getElementById('searchInput').value.toLowerCase().trim();
+      const status = document.getElementById('filterStatus').value;
+
+      const filtered = allRows.filter(r => {
+        const matchSearch = !q ||
+          r.name.toLowerCase().includes(q)    ||
+          r.email.toLowerCase().includes(q)   ||
+          (r.phone && r.phone.toLowerCase().includes(q)) ||
+          r.message.toLowerCase().includes(q);
+        const matchStatus = !status || r.status === status;
+        return matchSearch && matchStatus;
+      });
+
+      renderTable(filtered);
+    }
+
+    document.getElementById('searchInput').addEventListener('input', applyFilters);
+    document.getElementById('filterStatus').addEventListener('change', applyFilters);
+
+    // ── Load inquiries from DB ─────────────────────────────────
+    async function loadInquiries() {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '<tr class="state-row"><td colspan="8">⏳ Loading…</td></tr>';
+
+      try {
+        const res  = await fetch('get_inquiries.php');
+        const raw  = await res.text();
+        let data;
+        try { data = JSON.parse(raw); } catch(_) {
+          tbody.innerHTML = `<tr class="state-row"><td colspan="8">❌ Server error: ${raw.substring(0,200)}</td></tr>`;
+          return;
+        }
+
+        if (!data.success) {
+          tbody.innerHTML = `<tr class="state-row"><td colspan="8">❌ ${esc(data.message)}</td></tr>`;
+          return;
+        }
+
+        allRows = data.data;
+        updateStats(data.stats);
+        applyFilters();
+
+      } catch(_) {
+        tbody.innerHTML = '<tr class="state-row"><td colspan="8">❌ Could not reach server. Make sure XAMPP is running and open this page via http://localhost/</td></tr>';
+      }
+    }
+
+    document.getElementById('refreshBtn').addEventListener('click', loadInquiries);
+
+    // ── Change status ──────────────────────────────────────────
+    async function changeStatus(id, status, selectEl) {
+      selectEl.disabled = true;
+      try {
+        const res  = await fetch('update_status.php', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ id, status }),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          // update local data so filters still work
+          const row = allRows.find(r => +r.id === id);
+          if (row) row.status = status;
+
+          // re-calc stats from allRows
+          const stats = { total: allRows.length, new: 0, pending: 0, replied: 0 };
+          allRows.forEach(r => { if (stats[r.status] !== undefined) stats[r.status]++; });
+          updateStats(stats);
+
+          showToast('Status updated to "' + status + '".');
+        } else {
+          showToast(data.message || 'Failed to update status.', true);
+          // revert select to previous value
+          await loadInquiries();
+        }
+      } catch(_) {
+        showToast('Network error — could not update status.', true);
+      } finally {
+        selectEl.disabled = false;
+      }
+    }
+
+    // ── Delete inquiry ─────────────────────────────────────────
+    async function deleteInquiry(id, btnEl) {
+      if (!confirm('Delete this inquiry? This cannot be undone.')) return;
+
+      btnEl.disabled = true;
+      try {
+        const res  = await fetch('delete_inquiry.php', {
+          method:  'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body:    JSON.stringify({ id }),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          // remove from local array and re-render without a full reload
+          allRows = allRows.filter(r => +r.id !== id);
+          const stats = { total: allRows.length, new: 0, pending: 0, replied: 0 };
+          allRows.forEach(r => { if (stats[r.status] !== undefined) stats[r.status]++; });
+          updateStats(stats);
+          applyFilters();
+          showToast('Inquiry deleted.');
+        } else {
+          showToast(data.message || 'Failed to delete.', true);
+          btnEl.disabled = false;
+        }
+      } catch(_) {
+        showToast('Network error — could not delete.', true);
+        btnEl.disabled = false;
+      }
+    }
+
+    // ── Boot ───────────────────────────────────────────────────
+    loadInquiries();
+  </script>
+
+</body>
+</html>

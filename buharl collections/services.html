@@ -1,0 +1,1036 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Collections & Pricing — Buharl Collections</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* ── Collection section heading ── */
+    .coll-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 56px 0 24px;
+      padding-bottom: 14px;
+      border-bottom: 3px solid var(--rose-light);
+    }
+    .coll-heading .icon { font-size: 2rem; }
+    .coll-heading h2 { font-size: 1.6rem; color: var(--rose-dark); margin: 0; }
+    .coll-heading .range {
+      margin-left: auto;
+      font-family: Arial, sans-serif;
+      font-size: 0.82rem;
+      color: var(--muted);
+      background: var(--rose-light);
+      padding: 5px 14px;
+      border-radius: 999px;
+      white-space: nowrap;
+    }
+
+    /* ── Product card ── */
+    .item-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0,1fr));
+      gap: 22px;
+      margin-bottom: 8px;
+    }
+
+    .item-card {
+      background: var(--white);
+      border-radius: 18px;
+      overflow: hidden;
+      box-shadow: 0 6px 24px rgba(200,82,107,0.1);
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .item-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 14px 36px rgba(200,82,107,0.16);
+    }
+
+    .item-card img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .item-body {
+      padding: 16px 18px 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .item-tag {
+      display: inline-block;
+      background: var(--rose-light);
+      color: var(--rose-dark);
+      border-radius: 999px;
+      font-family: Arial, sans-serif;
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 3px 11px;
+      margin-bottom: 9px;
+      align-self: flex-start;
+    }
+
+    .item-card h3 {
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 6px;
+      line-height: 1.35;
+    }
+
+    .item-card .item-desc {
+      font-family: Arial, sans-serif;
+      font-size: 0.83rem;
+      color: var(--muted);
+      line-height: 1.55;
+      flex: 1;
+      margin-bottom: 14px;
+    }
+
+    .item-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      border-top: 1px solid rgba(200,82,107,0.08);
+      padding-top: 12px;
+      margin-top: auto;
+    }
+
+    .item-price {
+      font-family: Georgia, serif;
+      font-size: 1.18rem;
+      font-weight: 800;
+      color: var(--rose-dark);
+    }
+
+    .order-btn {
+      padding: 8px 18px;
+      background: var(--rose);
+      color: white;
+      border: none;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      white-space: nowrap;
+    }
+    .order-btn:hover { background: var(--rose-dark); transform: translateY(-1px); }
+
+    /* ── Dark card (Gen Z) ── */
+    .item-card.dark {
+      background: #1a1a1a;
+    }
+    .item-card.dark h3 { color: #fff; }
+    .item-card.dark .item-desc { color: rgba(255,255,255,0.55); }
+    .item-card.dark .item-footer { border-top-color: rgba(255,255,255,0.08); }
+    .item-card.dark .item-price { color: #f4b942; }
+    .item-card.dark .item-tag { background: rgba(244,185,66,0.18); color: #f4b942; }
+    .item-card.dark .order-btn { background: #f4b942; color: #1a1a1a; }
+    .item-card.dark .order-btn:hover { background: #d4a030; }
+
+    /* dark section heading */
+    .coll-heading.dark-head { border-bottom-color: rgba(244,185,66,0.3); }
+    .coll-heading.dark-head h2 { color: #f4b942; }
+    .coll-heading.dark-head .range { background: rgba(244,185,66,0.15); color: #f4b942; }
+
+    /* ── Featured custom card ── */
+    .custom-banner {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
+      align-items: center;
+      background: var(--white);
+      border-radius: 22px;
+      overflow: hidden;
+      box-shadow: 0 8px 30px rgba(200,82,107,0.1);
+      margin-bottom: 8px;
+    }
+    .custom-banner img {
+      width: 100%; height: 100%; min-height: 320px;
+      object-fit: cover;
+    }
+    .custom-body { padding: 32px 28px 32px 0; }
+    .custom-body h3 { font-size: 1.5rem; color: var(--rose-dark); margin-bottom: 12px; }
+    .custom-body p { font-family: Arial, sans-serif; color: var(--muted); font-size: 0.92rem; line-height: 1.7; margin-bottom: 20px; }
+    .custom-tiers { display: grid; gap: 12px; }
+    .tier-row {
+      display: flex; align-items: center; justify-content: space-between;
+      background: var(--soft); border-radius: 12px; padding: 12px 16px; gap: 12px;
+    }
+    .tier-label { font-family: Arial, sans-serif; font-size: 0.88rem; font-weight: 600; color: var(--text); flex: 1; }
+    .tier-price { font-family: Georgia, serif; font-weight: 800; color: var(--rose-dark); font-size: 1rem; white-space: nowrap; }
+    .tier-btn { padding: 6px 14px; background: var(--rose); color: white; border: none; border-radius: 999px; font-size: 0.75rem; font-weight: 700; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
+    .tier-btn:hover { background: var(--rose-dark); }
+
+    /* ── Order Modal ── */
+    .modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.65); z-index:9999; align-items:center; justify-content:center; padding:20px; }
+    .modal.show { display:flex; }
+    .modal-card { background:white; border-radius:22px; max-width:480px; width:100%; max-height:90vh; overflow-y:auto; padding:30px 28px; box-shadow:0 28px 70px rgba(0,0,0,0.28); }
+    .modal-header { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; padding-bottom:14px; border-bottom:1px solid rgba(200,82,107,0.1); }
+    .modal-header h3 { font-size:1.2rem; color:var(--rose-dark); }
+    .modal-close { background:transparent; border:none; font-size:1.9rem; color:var(--muted); cursor:pointer; line-height:1; padding:0; }
+    .modal-close:hover { color:var(--rose); }
+    .order-summary { background:var(--soft); border-radius:12px; padding:14px 16px; margin-bottom:18px; }
+    .order-summary h4 { font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.07em; color:var(--rose-dark); margin-bottom:6px; }
+    .s-name  { font-weight:700; color:var(--text); font-size:0.95rem; }
+    .s-coll  { font-family:Arial,sans-serif; font-size:0.78rem; color:var(--muted); margin-top:3px; }
+    .s-price { font-size:1.3rem; font-weight:800; color:var(--rose-dark); font-family:Georgia,serif; margin-top:4px; }
+    .f-label { display:block; font-size:0.72rem; font-weight:700; text-transform:uppercase; letter-spacing:0.06em; color:var(--rose-dark); margin:13px 0 5px; }
+    .f-input { width:100%; padding:10px 14px; border:1.5px solid rgba(200,82,107,0.2); border-radius:10px; background:#fff8fa; font-size:0.9rem; font-family:Arial,sans-serif; margin-top:0; transition:border-color 0.2s; }
+    .f-input:focus { outline:none; border-color:var(--rose); box-shadow:0 0 0 3px rgba(200,82,107,0.1); }
+    .f-row2 { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .submit-btn { width:100%; padding:13px; background:var(--rose); color:white; font-size:1rem; font-weight:700; border:none; border-radius:12px; cursor:pointer; margin-top:18px; transition:background 0.2s; }
+    .submit-btn:hover { background:var(--rose-dark); }
+    .modal-success { display:none; text-align:center; padding:10px; }
+    .modal-success.show { display:block; }
+    .success-icon { font-size:3.5rem; margin-bottom:14px; }
+    .success-title { font-size:1.3rem; color:var(--rose-dark); margin-bottom:10px; }
+    .success-msg { font-family:Arial,sans-serif; color:var(--muted); line-height:1.7; font-size:0.92rem; }
+    .continue-btn { margin-top:22px; padding:11px 28px; background:var(--rose); color:white; border:none; border-radius:999px; font-weight:700; font-size:0.9rem; cursor:pointer; }
+
+    @media (max-width: 860px) {
+      .item-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .custom-banner { grid-template-columns: 1fr; }
+      .custom-banner img { min-height: 220px; }
+      .custom-body { padding: 24px 20px; }
+      .coll-heading .range { display: none; }
+    }
+    @media (max-width: 540px) {
+      .item-grid { grid-template-columns: 1fr; }
+      .f-row2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <nav class="nav-wrap">
+        <div class="brand">Buharl<span>Collections</span></div>
+        <ul class="main-nav">
+          <li><a href="Buharl collections .html">Home</a></li>
+          <li><a href="services.html" class="active">Collections</a></li>
+          <li><a href="shop.html">Shop</a></li>
+          <li><a href="portfolio.html">Portfolio</a></li>
+          <li><a href="blog.html">Blog</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <a href="shop.html" class="btn btn-primary" style="font-size:0.85rem; padding:10px 22px;">Shop Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <section class="page-hero">
+    <div class="container">
+      <span style="display:inline-block; background:rgba(255,255,255,0.15); border:1px solid rgba(255,255,255,0.3); border-radius:999px; padding:5px 18px; font-family:Arial,sans-serif; font-size:0.72rem; font-weight:700; letter-spacing:0.12em; text-transform:uppercase; margin-bottom:18px;">📍 Nsambya, Kampala, Uganda</span>
+      <h1>Collections &amp; Pricing</h1>
+      <p>Browse all our collections with photos and prices — click "Order" on any item you love.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+
+      <!-- ══════════════════════════════════
+           CUSTOM ORDERS
+      ══════════════════════════════════ -->
+      <div class="coll-heading">
+        <span class="icon">👗</span>
+        <h2>Custom &amp; Special Orders</h2>
+        <span class="range">UGX 80,000 – 280,000+</span>
+      </div>
+      <div class="custom-banner">
+        <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=700&q=80" alt="Custom outfits" />
+        <div class="custom-body">
+          <h3>Made Just for You</h3>
+          <p>Can't find exactly what you're looking for? We take custom orders for any occasion — weddings, graduations, naming ceremonies, and more. Share your vision and we'll bring it to life.</p>
+          <div class="custom-tiers">
+            <div class="tier-row">
+              <span class="tier-label">Basic custom (simple design)</span>
+              <span class="tier-price">UGX 80,000</span>
+              <button class="tier-btn" onclick="openOrder('Basic Custom Outfit','UGX 80,000','Custom Orders')">Order</button>
+            </div>
+            <div class="tier-row">
+              <span class="tier-label">Mid-level custom (detailed work)</span>
+              <span class="tier-price">UGX 150,000</span>
+              <button class="tier-btn" onclick="openOrder('Mid-level Custom Outfit','UGX 150,000','Custom Orders')">Order</button>
+            </div>
+            <div class="tier-row">
+              <span class="tier-label">Premium custom (bridal / event gown)</span>
+              <span class="tier-price">UGX 280,000+</span>
+              <button class="tier-btn" onclick="openOrder('Premium Custom Outfit','UGX 280,000+','Custom Orders')">Order</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════
+           KIDSWEAR
+      ══════════════════════════════════ -->
+      <div class="coll-heading">
+        <span class="icon">🧒</span>
+        <h2>Kidswear</h2>
+        <span class="range">UGX 45,000 – 115,000</span>
+      </div>
+      <div class="item-grid">
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&w=600&q=80" alt="Kids Casual Play Set" />
+          <div class="item-body">
+            <span class="item-tag">Kidswear</span>
+            <h3>Kids Casual Play Set</h3>
+            <p class="item-desc">Comfortable cotton jogger + matching tee. Great for school &amp; play. Ages 1–10.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 50,000</span>
+              <button class="order-btn" onclick="openOrder('Kids Casual Play Set','UGX 50,000','Kidswear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1524863479829-916d8e77f114?auto=format&fit=crop&w=600&q=80" alt="Kids Party Set" />
+          <div class="item-body">
+            <span class="item-tag">Kidswear</span>
+            <h3>Kids Party Set</h3>
+            <p class="item-desc">Two-piece party set for girls aged 3–8. Bright colours, soft breathable fabric.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 68,000</span>
+              <button class="order-btn" onclick="openOrder('Kids Party Set','UGX 68,000','Kidswear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&w=601&q=80" alt="Girls Frilly Dress" />
+          <div class="item-body">
+            <span class="item-tag">Kidswear</span>
+            <h3>Girls Frilly Dress</h3>
+            <p class="item-desc">Sweet ruffled dress for special occasions. Pink, white &amp; lavender. Sizes 2–12yr.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 80,000</span>
+              <button class="order-btn" onclick="openOrder('Girls Frilly Dress','UGX 80,000','Kidswear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1519457431-44ccd64a579b?auto=format&fit=crop&w=602&q=80" alt="Matching Sibling Set" />
+          <div class="item-body">
+            <span class="item-tag">Kidswear</span>
+            <h3>Matching Sibling Set</h3>
+            <p class="item-desc">Coordinated outfits for brothers and sisters. Perfect for birthdays &amp; family events.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 115,000 / pair</span>
+              <button class="order-btn" onclick="openOrder('Matching Sibling Set','UGX 115,000 per pair','Kidswear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?auto=format&fit=crop&w=600&q=80" alt="Baby Essentials Bundle" />
+          <div class="item-body">
+            <span class="item-tag">Kidswear</span>
+            <h3>Baby Essentials Bundle</h3>
+            <p class="item-desc">Soft newborn clothing bundle — onesies, bibs &amp; a cap. Ages 0–12 months.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 45,000</span>
+              <button class="order-btn" onclick="openOrder('Baby Essentials Bundle','UGX 45,000','Kidswear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════
+           CASUAL WEAR
+      ══════════════════════════════════ -->
+      <div class="coll-heading">
+        <span class="icon">☀️</span>
+        <h2>Casual Daily Wear</h2>
+        <span class="range">UGX 84,000 – 136,000</span>
+      </div>
+      <div class="item-grid">
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=600&q=80" alt="Floral Summer Dress" />
+          <div class="item-body">
+            <span class="item-tag">Casual</span>
+            <h3>Floral Summer Dress</h3>
+            <p class="item-desc">Light cotton blend, playful floral print, midi length. Perfect for warm days. Sizes XS–2XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 105,000</span>
+              <button class="order-btn" onclick="openOrder('Floral Summer Dress','UGX 105,000','Casual Wear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=600&q=80" alt="Linen Co-ord Set" />
+          <div class="item-body">
+            <span class="item-tag">Casual</span>
+            <h3>Linen Co-ord Set</h3>
+            <p class="item-desc">Breathable linen wide-leg trousers + matching button-down top. Easy &amp; elegant. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 136,000</span>
+              <button class="order-btn" onclick="openOrder('Linen Co-ord Set','UGX 136,000','Casual Wear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80" alt="Maxi Wrap Dress" />
+          <div class="item-body">
+            <span class="item-tag">Casual</span>
+            <h3>Maxi Wrap Dress</h3>
+            <p class="item-desc">Flowy maxi wrap in earthy tones &amp; bold prints. Adjustable fit, very flattering.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 95,000</span>
+              <button class="order-btn" onclick="openOrder('Maxi Wrap Dress','UGX 95,000','Casual Wear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=600&q=80" alt="Soft Loungewear Set" />
+          <div class="item-body">
+            <span class="item-tag">Casual</span>
+            <h3>Soft Loungewear Set</h3>
+            <p class="item-desc">Ultra-soft joggers + matching long-sleeve top. Perfect for home or errands. Sizes XS–2XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 84,000</span>
+              <button class="order-btn" onclick="openOrder('Soft Loungewear Set','UGX 84,000','Casual Wear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=600&q=80" alt="Trendy Crop Top + Trousers" />
+          <div class="item-body">
+            <span class="item-tag">Casual</span>
+            <h3>Trendy Crop Top + Trousers</h3>
+            <p class="item-desc">Fitted crop top paired with high-waist wide-leg trousers. Multiple colour combos. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 90,000</span>
+              <button class="order-btn" onclick="openOrder('Trendy Crop Top + Trousers','UGX 90,000','Casual Wear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════
+           SPECIAL OCCASIONS
+      ══════════════════════════════════ -->
+      <div class="coll-heading">
+        <span class="icon">✨</span>
+        <h2>Special Occasion Looks</h2>
+        <span class="range">UGX 148,000 – 285,000</span>
+      </div>
+      <div class="item-grid">
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=601&q=80" alt="Birthday Party Dress" />
+          <div class="item-body">
+            <span class="item-tag">Occasion</span>
+            <h3>Birthday Party Dress</h3>
+            <p class="item-desc">Flirty, fun dress with ruffle detail. Hot pink, red &amp; electric blue. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 148,000</span>
+              <button class="order-btn" onclick="openOrder('Birthday Party Dress','UGX 148,000','Special Occasions')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=601&q=80" alt="Graduation Midi Dress" />
+          <div class="item-body">
+            <span class="item-tag">Occasion</span>
+            <h3>Graduation Midi Dress</h3>
+            <p class="item-desc">Structured bodice, flowing skirt. Ivory, black &amp; burgundy. Sizes XS–XL. Order 5 days early.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 186,000</span>
+              <button class="order-btn" onclick="openOrder('Graduation Midi Dress','UGX 186,000','Special Occasions')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1562157873-818bc0726f68?auto=format&fit=crop&w=600&q=80" alt="Wedding Guest Dress" />
+          <div class="item-body">
+            <span class="item-tag">Occasion</span>
+            <h3>Wedding Guest Dress</h3>
+            <p class="item-desc">Elegant A-line midi in dusty rose, sage &amp; champagne. Flattering on all body types. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 220,000</span>
+              <button class="order-btn" onclick="openOrder('Wedding Guest Dress','UGX 220,000','Special Occasions')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=600&q=80" alt="Evening Elegance Gown" />
+          <div class="item-body">
+            <span class="item-tag">Occasion</span>
+            <h3>Evening Elegance Gown</h3>
+            <p class="item-desc">Flowing midi gown in champagne satin. For galas &amp; formal events. Sizes 6–20, custom available.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 285,000</span>
+              <button class="order-btn" onclick="openOrder('Evening Elegance Gown','UGX 285,000','Special Occasions')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=601&q=80" alt="Cultural / Traditional Attire" />
+          <div class="item-body">
+            <span class="item-tag">Occasion</span>
+            <h3>Cultural / Traditional Attire</h3>
+            <p class="item-desc">Beautiful cultural outfits for traditional ceremonies &amp; celebrations. Custom made to order.</p>
+            <div class="item-footer">
+              <span class="item-price">From UGX 160,000</span>
+              <button class="order-btn" onclick="openOrder('Cultural / Traditional Attire','From UGX 160,000','Special Occasions')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════
+           SEASONAL
+      ══════════════════════════════════ -->
+      <div class="coll-heading">
+        <span class="icon">🍂</span>
+        <h2>Seasonal Wardrobe Picks</h2>
+        <span class="range">UGX 70,000 – 155,000</span>
+      </div>
+      <div class="item-grid">
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=601&q=80" alt="Spring Floral Co-ord" />
+          <div class="item-body">
+            <span class="item-tag">Seasonal</span>
+            <h3>Spring Floral Co-ord</h3>
+            <p class="item-desc">Fresh floral print shorts + matching crop jacket. Perfect for the warm season. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 110,000</span>
+              <button class="order-btn" onclick="openOrder('Spring Floral Co-ord','UGX 110,000','Seasonal')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=602&q=80" alt="Summer Light Dress" />
+          <div class="item-body">
+            <span class="item-tag">Seasonal</span>
+            <h3>Summer Light Dress</h3>
+            <p class="item-desc">Breezy, lightweight dress in vibrant summer colours. Easy movement, all-day comfort. Sizes XS–2XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 95,000</span>
+              <button class="order-btn" onclick="openOrder('Summer Light Dress','UGX 95,000','Seasonal')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=602&q=80" alt="Autumn Knit Co-ord Set" />
+          <div class="item-body">
+            <span class="item-tag">Seasonal</span>
+            <h3>Autumn Knit Co-ord Set</h3>
+            <p class="item-desc">Cosy ribbed knit top + wide-leg trousers. Caramel, rust &amp; forest green. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 122,000</span>
+              <button class="order-btn" onclick="openOrder('Autumn Knit Co-ord Set','UGX 122,000','Seasonal')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1562157873-818bc0726f68?auto=format&fit=crop&w=601&q=80" alt="Festive Holiday Look" />
+          <div class="item-body">
+            <span class="item-tag">Seasonal</span>
+            <h3>Festive Holiday Look</h3>
+            <p class="item-desc">Show-stopping festive outfit for end-of-year parties &amp; celebrations. Limited stock each season.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 155,000</span>
+              <button class="order-btn" onclick="openOrder('Festive Holiday Look','UGX 155,000','Seasonal')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1524863479829-916d8e77f114?auto=format&fit=crop&w=601&q=80" alt="Back-to-School Special" />
+          <div class="item-body">
+            <span class="item-tag">Seasonal</span>
+            <h3>Back-to-School Special</h3>
+            <p class="item-desc">Smart casual outfit bundle for kids &amp; teens heading back to school. Ages 6–18.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 70,000</span>
+              <button class="order-btn" onclick="openOrder('Back-to-School Special','UGX 70,000','Seasonal')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════
+           GEN Z DROPS
+      ══════════════════════════════════ -->
+      <div class="coll-heading dark-head" style="background:transparent;">
+        <span class="icon">🔥</span>
+        <h2>Gen Z Drops</h2>
+        <span class="range">UGX 72,000 – 209,000</span>
+      </div>
+      <div class="item-grid">
+
+        <div class="item-card dark">
+          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=600&q=80" alt="Neutral Ribbed Matching Set" />
+          <div class="item-body">
+            <span class="item-tag">#CleanGirl</span>
+            <h3>Neutral Ribbed Matching Set</h3>
+            <p class="item-desc">Fitted ribbed crop top + high-waist wide-leg trousers. Beige, cream &amp; mocha. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 129,000</span>
+              <button class="order-btn" onclick="openOrder('Neutral Ribbed Matching Set','UGX 129,000','Gen Z Drops')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card dark">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=601&q=80" alt="Y2K Metallic Mini Skirt" />
+          <div class="item-body">
+            <span class="item-tag">#Y2KRevival</span>
+            <h3>Y2K Metallic Mini Skirt</h3>
+            <p class="item-desc">Shimmery metallic mini in silver, bronze &amp; rose gold. Pairs with a crop top. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 72,000</span>
+              <button class="order-btn" onclick="openOrder('Y2K Metallic Mini Skirt','UGX 72,000','Gen Z Drops')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card dark">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=601&q=80" alt="Cut-Out Bodycon Dress" />
+          <div class="item-body">
+            <span class="item-tag">#AestheticFit</span>
+            <h3>Cut-Out Bodycon Dress</h3>
+            <p class="item-desc">Strategic cut-outs at waist &amp; shoulders. Fitted, figure-flattering. Perfect for nights out. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 118,000</span>
+              <button class="order-btn" onclick="openOrder('Cut-Out Bodycon Dress','UGX 118,000','Gen Z Drops')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card dark">
+          <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=600&q=80" alt="Utility Cargo Co-ord Set" />
+          <div class="item-body">
+            <span class="item-tag">#CargoCore</span>
+            <h3>Utility Cargo Co-ord Set</h3>
+            <p class="item-desc">Wide-leg cargo trousers + cropped utility jacket. Olive, khaki &amp; black. Sizes XS–2XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 160,000</span>
+              <button class="order-btn" onclick="openOrder('Utility Cargo Co-ord Set','UGX 160,000','Gen Z Drops')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card dark">
+          <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=600&q=80" alt="Drop-Shoulder Oversized Hoodie" />
+          <div class="item-body">
+            <span class="item-tag">#OversizedFits</span>
+            <h3>Drop-Shoulder Oversized Hoodie</h3>
+            <p class="item-desc">Heavyweight fleece, dropped shoulders, kangaroo pocket. Black, grey, dusty pink. Sizes XS–3XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 106,000</span>
+              <button class="order-btn" onclick="openOrder('Drop-Shoulder Oversized Hoodie','UGX 106,000','Gen Z Drops')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card dark">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?auto=format&fit=crop&w=601&q=80" alt="Satin Slip Midi Dress" />
+          <div class="item-body">
+            <span class="item-tag">#AestheticFit</span>
+            <h3>Satin Slip Midi Dress</h3>
+            <p class="item-desc">Bias-cut satin slip in dusty rose, champagne &amp; black. Day-to-night effortlessly. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 144,000</span>
+              <button class="order-btn" onclick="openOrder('Satin Slip Midi Dress','UGX 144,000','Gen Z Drops')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card dark">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=603&q=80" alt="Denim Corset + Flare Jeans" />
+          <div class="item-body">
+            <span class="item-tag">#Y2KRevival</span>
+            <h3>Denim Corset + Flare Jeans</h3>
+            <p class="item-desc">Boned denim corset + matching wide-leg flare jeans. Peak 2000s energy, 2026 silhouette. Sizes 6–18.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 198,000</span>
+              <button class="order-btn" onclick="openOrder('Denim Corset + Flare Jeans','UGX 198,000','Gen Z Drops')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card dark">
+          <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=601&q=80" alt="Graphic Streetwear Tracksuit" />
+          <div class="item-body">
+            <span class="item-tag">#Streetwear</span>
+            <h3>Graphic Streetwear Tracksuit</h3>
+            <p class="item-desc">Bold graphic joggers + zip-up jacket in matching colourway. Black/white &amp; cream/brown. Sizes S–2XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 209,000</span>
+              <button class="order-btn" onclick="openOrder('Graphic Streetwear Tracksuit','UGX 209,000','Gen Z Drops')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card dark">
+          <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=603&q=80" alt="Biker Shorts & Crop Set" />
+          <div class="item-body">
+            <span class="item-tag">#CottonOnCore</span>
+            <h3>Biker Shorts &amp; Crop Set</h3>
+            <p class="item-desc">High-compression biker shorts + matching longline sports bra. Black, navy, burgundy. Sizes XS–XXL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 99,000</span>
+              <button class="order-btn" onclick="openOrder('Biker Shorts & Crop Set','UGX 99,000','Gen Z Drops')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════
+           STREETWEAR
+      ══════════════════════════════════ -->
+      <div class="coll-heading">
+        <span class="icon">🧢</span>
+        <h2>Streetwear &amp; Unisex</h2>
+        <span class="range">UGX 55,000 – 171,000</span>
+      </div>
+      <div class="item-grid">
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1503342217505-b0a15ec3261c?auto=format&fit=crop&w=601&q=80" alt="Unisex Oversized Tee" />
+          <div class="item-body">
+            <span class="item-tag">Streetwear</span>
+            <h3>Unisex Oversized Tee</h3>
+            <p class="item-desc">Heavyweight cotton oversized tee. Graphic or plain. Black, white, grey &amp; olive. Sizes XS–2XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 55,000</span>
+              <button class="order-btn" onclick="openOrder('Unisex Oversized Tee','UGX 55,000','Streetwear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1591047139829-d91aecb6caea?auto=format&fit=crop&w=601&q=80" alt="Baggy Cargo Trousers" />
+          <div class="item-body">
+            <span class="item-tag">Streetwear</span>
+            <h3>Baggy Cargo Trousers</h3>
+            <p class="item-desc">Wide-leg cargo trousers with side pockets. Olive, khaki, black &amp; beige. Unisex, sizes XS–2XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 98,000</span>
+              <button class="order-btn" onclick="openOrder('Baggy Cargo Trousers','UGX 98,000','Streetwear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=602&q=80" alt="Padded Puffer Vest" />
+          <div class="item-body">
+            <span class="item-tag">Streetwear</span>
+            <h3>Padded Puffer Vest</h3>
+            <p class="item-desc">Sleeveless puffer vest — the ultimate streetwear layer. Black, olive, cream &amp; orange. Sizes XS–XXL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 140,000</span>
+              <button class="order-btn" onclick="openOrder('Padded Puffer Vest','UGX 140,000','Streetwear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?auto=format&fit=crop&w=601&q=80" alt="Varsity Jacket" />
+          <div class="item-body">
+            <span class="item-tag">Streetwear</span>
+            <h3>Varsity Jacket</h3>
+            <p class="item-desc">Classic varsity with contrast sleeves. Black/cream, navy/white, red/white. Unisex, Sizes XS–2XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 171,000</span>
+              <button class="order-btn" onclick="openOrder('Varsity Jacket','UGX 171,000','Streetwear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=604&q=80" alt="Unisex Jogger Set" />
+          <div class="item-body">
+            <span class="item-tag">Streetwear</span>
+            <h3>Unisex Jogger Set</h3>
+            <p class="item-desc">Matching zip hoodie + tapered joggers. Soft fleece lining. Black, grey &amp; forest green. Sizes XS–2XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 152,000</span>
+              <button class="order-btn" onclick="openOrder('Unisex Jogger Set','UGX 152,000','Streetwear')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ══════════════════════════════════
+           PARTY & NIGHT OUT
+      ══════════════════════════════════ -->
+      <div class="coll-heading">
+        <span class="icon">🪩</span>
+        <h2>Party &amp; Night Out</h2>
+        <span class="range">UGX 118,000 – 160,000</span>
+      </div>
+      <div class="item-grid">
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=602&q=80" alt="Sheer Overlay Two-Piece" />
+          <div class="item-body">
+            <span class="item-tag">Party</span>
+            <h3>Sheer Overlay Two-Piece</h3>
+            <p class="item-desc">Sheer mesh overlay top + matching high-waist shorts. Edgy &amp; elegant. Black &amp; nude. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 125,000</span>
+              <button class="order-btn" onclick="openOrder('Sheer Overlay Two-Piece','UGX 125,000','Party & Night Out')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1562157873-818bc0726f68?auto=format&fit=crop&w=602&q=80" alt="Satin Wrap Party Dress" />
+          <div class="item-body">
+            <span class="item-tag">Party</span>
+            <h3>Satin Wrap Party Dress</h3>
+            <p class="item-desc">Plunge-neck satin wrap. Flattering on every body. Emerald, cherry red &amp; midnight blue. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 133,000</span>
+              <button class="order-btn" onclick="openOrder('Satin Wrap Party Dress','UGX 133,000','Party & Night Out')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=602&q=80" alt="Sequin Mini Dress" />
+          <div class="item-body">
+            <span class="item-tag">Party</span>
+            <h3>Sequin Mini Dress</h3>
+            <p class="item-desc">All-over sequin mini that catches every light. Gold, silver &amp; black. Perfect for club nights. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 160,000</span>
+              <button class="order-btn" onclick="openOrder('Sequin Mini Dress','UGX 160,000','Party & Night Out')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1518831959646-742c3a14ebf7?auto=format&fit=crop&w=604&q=80" alt="Wrap Halter Top + Skirt Set" />
+          <div class="item-body">
+            <span class="item-tag">Party</span>
+            <h3>Wrap Halter Top + Skirt Set</h3>
+            <p class="item-desc">Wrap halter top paired with a matching bodycon skirt. Sultry &amp; elegant. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 118,000</span>
+              <button class="order-btn" onclick="openOrder('Wrap Halter Top + Skirt Set','UGX 118,000','Party & Night Out')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="item-card">
+          <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=603&q=80" alt="Lace Mini Dress" />
+          <div class="item-body">
+            <span class="item-tag">Party</span>
+            <h3>Lace Mini Dress</h3>
+            <p class="item-desc">Delicate lace overlay mini dress. Ivory, black &amp; blush pink. Lined. Perfect for upscale events. Sizes XS–XL.</p>
+            <div class="item-footer">
+              <span class="item-price">UGX 145,000</span>
+              <button class="order-btn" onclick="openOrder('Lace Mini Dress','UGX 145,000','Party & Night Out')">Order Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-heading">
+        <span class="eyebrow">How It Works</span>
+        <h2>Ordering Is Simple</h2>
+        <p>From browsing to delivery — quick, easy and done via WhatsApp.</p>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:20px;">
+        <div style="background:var(--white); border-radius:var(--radius); padding:26px 18px; box-shadow:var(--shadow); text-align:center;">
+          <div style="font-size:2rem; margin-bottom:10px;">👗</div>
+          <h3 style="font-size:0.98rem; color:var(--rose-dark); margin-bottom:8px;">1. Pick Your Item</h3>
+          <p style="font-family:Arial,sans-serif; font-size:0.84rem; color:var(--muted);">Browse the collections above and click "Order Now".</p>
+        </div>
+        <div style="background:var(--white); border-radius:var(--radius); padding:26px 18px; box-shadow:var(--shadow); text-align:center;">
+          <div style="font-size:2rem; margin-bottom:10px;">📋</div>
+          <h3 style="font-size:0.98rem; color:var(--rose-dark); margin-bottom:8px;">2. Fill Your Details</h3>
+          <p style="font-family:Arial,sans-serif; font-size:0.84rem; color:var(--muted);">Enter your name, size, phone &amp; any colour preference.</p>
+        </div>
+        <div style="background:var(--white); border-radius:var(--radius); padding:26px 18px; box-shadow:var(--shadow); text-align:center;">
+          <div style="font-size:2rem; margin-bottom:10px;">📞</div>
+          <h3 style="font-size:0.98rem; color:var(--rose-dark); margin-bottom:8px;">3. We Contact You</h3>
+          <p style="font-family:Arial,sans-serif; font-size:0.84rem; color:var(--muted);">We reach out via WhatsApp within 24 hours to confirm &amp; arrange payment.</p>
+        </div>
+        <div style="background:var(--white); border-radius:var(--radius); padding:26px 18px; box-shadow:var(--shadow); text-align:center;">
+          <div style="font-size:2rem; margin-bottom:10px;">📦</div>
+          <h3 style="font-size:0.98rem; color:var(--rose-dark); margin-bottom:8px;">4. Pick Up or Delivery</h3>
+          <p style="font-family:Arial,sans-serif; font-size:0.84rem; color:var(--muted);">Collect from Nsambya, Kampala or request delivery to your location.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="section" style="background:linear-gradient(135deg,var(--rose-dark),var(--rose)); color:white; text-align:center;">
+    <div class="container">
+      <h2 style="font-size:clamp(1.8rem,3.5vw,2.8rem); margin-bottom:14px; color:white;">Can't Find What You Need?</h2>
+      <p style="font-family:Arial,sans-serif; color:rgba(255,255,255,0.85); max-width:460px; margin:0 auto 28px;">Contact us directly and we'll find or custom-make exactly what you're looking for.</p>
+      <a href="contact.html" class="btn btn-light">Talk to Us</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-top">
+        <div>
+          <div class="footer-brand">Buharl<span>Collections</span></div>
+          <p>Stylish, affordable fashion for children and adults. Based in Nsambya, Kampala, Uganda.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Pages</h4>
+          <ul>
+            <li><a href="Buharl collections .html">Home</a></li>
+            <li><a href="services.html">Collections</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="portfolio.html">Portfolio</a></li>
+            <li><a href="blog.html">Blog</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Collections</h4>
+          <ul>
+            <li><a href="services.html">Gen Z Drops 🔥</a></li>
+            <li><a href="services.html">Kidswear</a></li>
+            <li><a href="services.html">Casual Wear</a></li>
+            <li><a href="services.html">Special Occasions</a></li>
+            <li><a href="services.html">Streetwear</a></li>
+            <li><a href="services.html">Party &amp; Night Out</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul>
+            <li><a href="mailto:hello@buharlcollections.com">hello@buharlcollections.com</a></li>
+            <li><a href="tel:+256700000000">+256 700 000 000</a></li>
+            <li><a href="contact.html">Send a Message</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">&copy; 2026 Buharl Collections · Nsambya, Kampala, Uganda. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- ORDER MODAL -->
+  <div class="modal" id="orderModal">
+    <div class="modal-card">
+      <div id="modalForm">
+        <div class="modal-header">
+          <h3>Place Your Order</h3>
+          <button class="modal-close" onclick="closeOrder()">&times;</button>
+        </div>
+        <div class="order-summary">
+          <h4>Item Selected</h4>
+          <div class="s-name" id="modalProduct">—</div>
+          <div class="s-coll" id="modalCollection"></div>
+          <div class="s-price" id="modalPrice">—</div>
+        </div>
+        <form onsubmit="submitOrder(event)">
+          <div class="f-row2">
+            <div><label class="f-label">First Name</label><input class="f-input" type="text" id="oFirst" placeholder="Amina" required /></div>
+            <div><label class="f-label">Last Name</label><input class="f-input" type="text" id="oLast" placeholder="Nakato" required /></div>
+          </div>
+          <label class="f-label">Phone / WhatsApp</label>
+          <input class="f-input" type="tel" id="oPhone" placeholder="+256 700 000 000" required />
+          <label class="f-label">Email (optional)</label>
+          <input class="f-input" type="email" id="oEmail" placeholder="you@example.com" />
+          <div class="f-row2">
+            <div>
+              <label class="f-label">Size</label>
+              <select class="f-input" id="oSize">
+                <option value="">Select size</option>
+                <option>XS</option><option>S</option><option>M</option><option>L</option>
+                <option>XL</option><option>XXL</option><option>2–4yr</option>
+                <option>5–8yr</option><option>9–12yr</option><option>Custom</option>
+              </select>
+            </div>
+            <div><label class="f-label">Quantity</label><input class="f-input" type="number" id="oQty" value="1" min="1" max="20" /></div>
+          </div>
+          <label class="f-label">Colour / Extra Notes</label>
+          <textarea class="f-input" id="oNotes" rows="3" placeholder="e.g. Black colour, size M. Delivery to Kampala CBD."></textarea>
+          <button type="submit" class="submit-btn">✓ Confirm Order Request</button>
+        </form>
+      </div>
+      <div class="modal-success" id="modalSuccess">
+        <div class="success-icon">🎉</div>
+        <div class="success-title">Order Request Sent!</div>
+        <p class="success-msg">
+          Thank you! We've received your request for<br>
+          <strong id="successItem">—</strong>.<br><br>
+          We'll contact you via <strong>WhatsApp</strong> within <strong>24 hours</strong>
+          to confirm your order and arrange payment &amp; delivery from
+          <strong>Nsambya, Kampala, Uganda</strong>.
+        </p>
+        <button class="continue-btn" onclick="closeOrder()">Continue Shopping</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openOrder(product, price, collection) {
+      document.getElementById('modalProduct').textContent   = product;
+      document.getElementById('modalPrice').textContent     = price;
+      document.getElementById('modalCollection').textContent = 'Collection: ' + collection;
+      document.getElementById('modalForm').style.display    = 'block';
+      document.getElementById('modalSuccess').classList.remove('show');
+      document.getElementById('orderModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeOrder() {
+      document.getElementById('orderModal').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+    function submitOrder(e) {
+      e.preventDefault();
+      document.getElementById('successItem').textContent = document.getElementById('modalProduct').textContent;
+      document.getElementById('modalForm').style.display = 'none';
+      document.getElementById('modalSuccess').classList.add('show');
+    }
+    document.getElementById('orderModal').addEventListener('click', function(e) { if (e.target === this) closeOrder(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeOrder(); });
+  </script>
+
+</body>
+</html>
